@@ -16,6 +16,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import LogoutIcon from '@mui/icons-material/Logout';
 
+
+
 function Student() {
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
@@ -27,7 +29,7 @@ function Student() {
 
 
     //code 
-   
+    
 
     ;
     return (
@@ -39,7 +41,8 @@ function Student() {
             endAdornment: (
             <InputAdornment>
             <IconButton >             
-            <SearchIcon/>
+            <SearchIcon />
+            
             </IconButton>
             </InputAdornment>
             )
