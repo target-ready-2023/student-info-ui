@@ -26,22 +26,9 @@ function Student() {
         setOpen(false);}
 
 
+    //code 
+   
 
-
-    // const [showDetails, setShowDetails] = React.useState(false);
-    // const [studentId, setStudentId] = React.useState(null); // State to hold the student ID
-      
-    // const handleSearchClick = () => {
-    //       // Here, you can fetch the student details based on your logic and set the state to show the view page.
-    //       // For this example, we'll use a hardcoded student ID.
-    // const studentIDToFetch = "123"; // Replace "123" with the actual student ID from your search logic
-    // setStudentId(studentIDToFetch);
-    // setShowDetails(true);
-    //     };
-      
-    // const handleCloseDetails = () => {
-    //     setShowDetails(false);
-    // }
     ;
     return (
         <Card className="App-Card">
@@ -51,11 +38,9 @@ function Student() {
             InputProps={{
             endAdornment: (
             <InputAdornment>
-            <IconButton> 
-              {/* onClick={handleSearchClick} */}
-            <SearchIcon />
+            <IconButton >             
+            <SearchIcon/>
             </IconButton>
-            {/* {showDetails && <StudentDetails studentId={123} onClose={handleCloseDetails} />} */}
             </InputAdornment>
             )
             }}
