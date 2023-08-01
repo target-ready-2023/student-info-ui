@@ -1,7 +1,9 @@
 import { Card } from "@mui/material"
 import * as React from 'react';
+import { makeStyles } from '@material-ui/styles';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+//import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import IconButton from "@material-ui/core/IconButton";
@@ -15,10 +17,18 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import axios from 'axios';
+import { useNavigate,useParams,useHistory } from "react-router-dom";
+import AllStudentsTable from "../Mapping/AllStudentsTable";
+import Link from '@mui/material/Link';
+import Grid from "@material-ui/core";
+import Addstudent from "../Mapping/AddNewStudent";
 
 
 
 function Student() {
+  const [showComponent, setShowComponent] = React.useState(false);
+
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -29,168 +39,63 @@ function Student() {
 
 
     //code 
-    
+  const navigate = useNavigate();
+  const [studentId, setstudentId] = React.useState("");
+  const [studentData, setstudentData] = React.useState("");
+  const id=2;
+  
+    // Function to handle changes in the text field
+    const handleChange = (event) => {
+      setstudentId(event.target.value);
+    };
+  
+    // Function to handle the submission
+    const handleSubmit = (event) => {
+      event.preventDefault();
+  
+      // Construct the dynamic URL using the stored value
+      const dynamicURL = `studentDetails/${studentId}`;
+      navigate(dynamicURL);
+  };
 
-    ;
+  const navigatee = useNavigate();
+
+  
+    const handleGetAllStudents=()=> {
+      navigatee("/all-students"); // Navigate to the new page with the table
+    };
+ 
     return (
         <Card className="App-Card">
             <h3>Student Search Page</h3>
+            
+            <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center',justifyContent: 'center' }}>
             <TextField
             label="Enter Student ID "
-            InputProps={{
-            endAdornment: (
-            <InputAdornment>
-            <IconButton >             
-            <SearchIcon />
+            value={studentId}
+            onChange={handleChange}
+            />    
+                       
+          <Button type="submit" variant="contained" style={{ backgroundColor: '#0047AB', color: '#FFFFFF',minWidth: '40px' }} ><SearchIcon/> </Button>
+        </form>           
             
-            </IconButton>
-            </InputAdornment>
-            )
-            }}
-            />
+        <stack direction="row" spacing={4} > 
+            <Box textAlign='center' sx={{mt:'1%'}}><Button onClick={handleClickOpen} variant="contained" color="primary"> <PersonAddIcon />  Add a new student </Button></Box>
+            {showComponent && <Addstudent/>}
+
+           
 
 
-            <Box sx={{ position: "fixed", top: 650, right: 0, zIndex: 2000 }}>
-            <Button variant="contained" color="error">
-            <LogoutIcon/> Logout 
-            </Button>
-            </Box>
-
-
-            <stack direction="row" spacing={4} > 
-            <Box sx={{ ml: "40rem", mt:"3rem", width: 230 }}><Button onClick={handleClickOpen} variant="contained"> <PersonAddIcon />  Add a new student </Button></Box>
-            <Dialog PaperProps={{
-    style: {
-      backgroundColor: "#E2F8FC",
-      boxShadow: "none"
-    },
-  }} open={open} onClose={handleClose}>
-            <DialogTitle>Student Details</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Add the details of student. 
-          </DialogContentText>
-          <Button
-          variant="contained"
-          component="label"
-          >
-        Upload Picture
-        <input
-        type="file"
-        hidden
-        />
-        </Button>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="First Name"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Last Name"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Age"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Mobile Number"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-            <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Standard"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Subjects"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Extra Cirriculars"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Allergies"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Blood Group"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Transportation"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Add Student</Button>
-        </DialogActions>
-      </Dialog>
+        
+         
             {/* <AddNew open={open} onClose={handleClose}/> */}
-            <Box sx={{ ml: "40rem",   mt:"3rem", width: 230 }}><Button variant="contained"> Get all students </Button></Box>
+            <Box textAlign='center' sx={{mt:'1%'}}><Button variant="contained" color="primary" onClick={handleGetAllStudents}> Get all students </Button></Box>
+            
             </stack>
+            
             
         </Card>
     );
 }
+
 export default Student;
