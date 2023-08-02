@@ -11,6 +11,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@material-ui/core/Button';
 import Studentservice from '../services/Studentservice';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 const Addstudent=()=>{
     
     const [open, setOpen] = React.useState(true);
@@ -34,6 +38,17 @@ const Addstudent=()=>{
     const [transport,setTransport]=React.useState('');
     const saveStudent=(e)=>{
         e.preventDefault();
+
+        if (!firstName) {
+          alert("Please enter the First Name.");
+          return; // Exit the function if the First Name field is empty
+        }
+    
+        if (!lastName) {
+          alert("Please enter the Last Name.");
+          return; // Exit the function if the Last Name field is empty
+        }
+
         setOpen(false);
         const student={firstName,lastName,emailId,age,address,gender,subjects,_class,motherName,fatherName,extracurriculars,allergies,bloodGroup,transport};
         Studentservice.createStudent(student).then(response => response.data)
@@ -46,17 +61,14 @@ const Addstudent=()=>{
             </Dialog>
         })
         };
+
+        
         return(
-<Dialog PaperProps={{
-    style: {
-      color: "#E2F8FC",
-      boxShadow: "none"
-    },
-  }} open={open} onClose={handleClose}>
+<Dialog  open={open} onClose={handleClose}>
             <DialogTitle>Student Details</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Add the details of student. 
+            <strong>Add the details of student. </strong>
           </DialogContentText>
           <Button
           variant="contained"
@@ -102,23 +114,30 @@ const Addstudent=()=>{
             value={emailId}
             onChange={(e)=>setEmail(e.target.value)}
           />
-          <InputLabel id="demo-simple-select-filled-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled-label"
-          value={age}
-          onChange={(e)=>setAge(e.target.value)}
-          label="Age"
-          fullWidth
-        >
-          <MenuItem value="">
+
+<TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Age"
+            input="name"
+            fullWidth
+            variant="standard"
+            value={age}
+            onChange={(e)=>setAge(e.target.value)}
+          />
+
+          {/* <InputLabel id="demo-simple-select-filled-label">Age</InputLabel> */}
+       
+          
+          {/* <MenuItem value="">
             <em>None</em>
           </MenuItem>
           <MenuItem value={10}>10</MenuItem>
           <MenuItem value={11}>11</MenuItem>
-          <MenuItem value={12}>12</MenuItem>
-        </Select>
-        <TextField
+          <MenuItem value={12}>12</MenuItem> */}
+        {/* </Select> */}
+        {/* <TextField
             autoFocus
             margin="dense"
             id="name"
@@ -128,7 +147,20 @@ const Addstudent=()=>{
             variant="standard"
             value={gender}
             onChange={(e)=>setGender(e.target.value)}
-          />
+            
+          /> */}
+          <FormControl>
+      <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+      <RadioGroup
+        row
+        aria-labelledby="demo-row-radio-buttons-group-label"
+        name="row-radio-buttons-group"
+      >
+        <FormControlLabel value="female" control={<Radio />} label="Female" onChange={(e)=>setGender(e.target.value)}/>
+        <FormControlLabel value="male" control={<Radio />} label="Male" onChange={(e)=>setGender(e.target.value)}/>
+        <FormControlLabel value="other" control={<Radio />} label="Other" onChange={(e)=>setGender(e.target.value)}/>
+      </RadioGroup>
+    </FormControl>
           <TextField
             autoFocus
             margin="dense"
@@ -139,6 +171,8 @@ const Addstudent=()=>{
             variant="standard"
             value={motherName}
             onChange={(e)=>setMotherName(e.target.value)}
+
+            
           />
           <TextField
             autoFocus
@@ -228,4 +262,4 @@ const Addstudent=()=>{
       </Dialog>
         );
 }
-export default Addstudent
+export default Addstudent;

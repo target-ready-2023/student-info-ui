@@ -2,7 +2,7 @@ import { Card } from "@mui/material"
 import * as React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Stack from '@mui/material/Stack';
-//import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Button from '@material-ui/core/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -32,6 +32,7 @@ function Student() {
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
+        setShowComponent(true);
       };
      
     const handleClose =() =>{
@@ -42,7 +43,7 @@ function Student() {
   const navigate = useNavigate();
   const [studentId, setstudentId] = React.useState("");
   const [studentData, setstudentData] = React.useState("");
-  const id=2;
+  // const id=2;
   
     // Function to handle changes in the text field
     const handleChange = (event) => {
@@ -56,6 +57,9 @@ function Student() {
       // Construct the dynamic URL using the stored value
       const dynamicURL = `studentDetails/${studentId}`;
       navigate(dynamicURL);
+
+
+      // const [selectedStudent, setSelectedStudent] = React.useState(null);
   };
 
   const navigatee = useNavigate();
@@ -76,7 +80,7 @@ function Student() {
             onChange={handleChange}
             />    
                        
-          <Button type="submit" variant="contained" style={{ backgroundColor: '#0047AB', color: '#FFFFFF',minWidth: '40px' }} ><SearchIcon/> </Button>
+          <Button type="submit" variant="contained" style={{ backgroundColor: '#0047AB', color: '#FFFFFF',minWidth: '40px',marginLeft:'1%' }} ><SearchIcon/> </Button>
         </form>           
             
         <stack direction="row" spacing={4} > 

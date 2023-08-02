@@ -1,102 +1,120 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Studentservice from "../services/Studentservice";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import { useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import UpdateStudentDialog from "./UpdateStudentDialog";
-// import DeleteStudentButton from "./DeleteStudentButton";
+import UpdateStudentDialog from "./UpdateStudentDialog";
 
 const StudentDetails = () => {
+  const [studentData, setStudentData] = React.useState({});
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [showComponent, setShowComponent] = React.useState(false);
+  const [studentDeleted, setStudentDeleted] = React.useState(false);
 
-  const [studentData, setstudentData] = React.useState("");
-  const {id}=useParams();
-  const [selectedStudent, setSelectedStudent] = React.useState(null);
-  React.useEffect(()=>{
-    Studentservice.getStudentById(id).then(response => response.data)
-    .then((data) => {
-         setstudentData(data)
-     });
-  })
-  console.log(studentData)
+  useEffect(() => {
+    Studentservice.getStudentById(id)
+      .then((response) => {
+        setStudentData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching student:", error);
+      });
+  }, [id]);
 
-  const [open, setOpen] = React.useState(false);
+  const handleUpdateStudentClick = () => {
+    setShowComponent(true);
+  };
 
-  // const handleUpdateStudentClick = () => {
-  //   setOpen(true);
-  // };
+  const handleDeleteConfirmation = () => {
+    Studentservice.deleteStudentById(studentData.id)
+      .then((response) => {
+        // Handle successful response, e.g., show a success message
+        console.log("Student deleted successfully!", response.data);
+        setStudentData({});
+        setStudentDeleted(true);
 
+        // Optionally, you can also perform any other action after successful deletion
+        // Reset the studentData state after successful deletion
+        // setTimeout(() => {
+        //   navigate("/students"); // Redirect to student page after 2 seconds
+        // }, 2000);
+      })
+      .catch((error) => {
+        // Handle error, e.g., show an error message
+        console.error("Error deleting student:", error);
+      });
+  };
 
-  // const handleDeleteConfirmation = () => {
-  //   // Call the delete action
-  //   if (selectedStudent) {
-  //     // Perform any additional logic before deleting the student (if needed)
-  //     console.log("Deleting student with ID:", selectedStudent.id);
-  //     // Optionally, you can also perform any other action after successful deletion
-  //     setSelectedStudent(null); // Reset the selected student after deletion
-  //   }
-  // };
   return (
-    <Box display="flex" flexDirection="column"  height="100vh" >
-      <Typography variant="h4" style={{ textAlign: "center" }}><strong>Student Details </strong> </Typography>
-      
-      <Grid container alignItems="center" spacing={1}>
-        <Grid item xs={12} md={6} display="flex" justifyContent="center">
-          {/* Placeholder for Picture */}
-          <Tooltip title={studentData.firstName} placement="top">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Demo Picture"
-            title="Demo Picture Title"
-            style={{ width: "160px", height: "160px", borderRadius: "30%" ,marginLeft: "120px"}}
-          />          
-          </Tooltip>
-          
-        </Grid>
-        <Grid item xs={12} md={6} style={{ marginTop: "40px" }}>
-      
-      <Typography variant="body1"><strong>First Name:</strong> {studentData.firstName}</Typography>
-      <Typography variant="body1"><strong>Last Name:</strong> {studentData.lastName}</Typography>
-      <Typography variant="body1"><strong>Age:</strong> {studentData.age}</Typography>
-      <Typography variant="body1"><strong>Email:</strong> {studentData.emailId}</Typography>
-      <Typography variant="body1"><strong>Class:</strong> {studentData._class}</Typography>
-      <Typography variant="body1"><strong>Address:</strong> {studentData.address}</Typography>
-      <Typography variant="body1"><strong>Father's Name:</strong> {studentData.fatherName}</Typography>
-      <Typography variant="body1"><strong>Mother's Name:</strong> {studentData.motherName}</Typography>
-      <Typography variant="body1"><strong>Blood Group:</strong> {studentData.bloodGroup}</Typography>
-      <Typography variant="body1"><strong>Allergies: </strong>{studentData.allergies}</Typography>
-      <Typography variant="body1"><strong>Extracurricular:</strong> {studentData.extraCurricular}</Typography>
-      <Typography variant="body1"><strong>Transport:</strong> {studentData.transport}</Typography>
-       </Grid>
-       </Grid>
-       <Box
-        display="flex"
-        justifyContent="flex-end"
-        width="50%"
-        mt={2} // Margin top for buttons
-      >
-         
-        <Button variant="contained" color="primary" style={{ marginLeft: "10px" }} >
-        <EditIcon/>
-          Edit Student Details
-        </Button>     
-        {/* <UpdateStudentDialog open={open} setOpen={setOpen} /> */}
-        
-        <Button variant="contained" color="secondary" style={{ marginLeft: "10px" }}   >
-          <DeleteIcon/>
-          Delete Student
-        </Button>
-        
-        
-        </Box>
-        </Box>
-    
+    <div>
+      <div style={{ backgroundColor: '#3F51B5', height: '10vh' }}>
+        <h1 style={{ margin: '0px', textAlign: 'center', color: 'white', padding: '1%' }}>Student Details</h1>
+      </div>
+      {studentDeleted ? (
+        <Typography variant="body1" style={{ textAlign: "center" }}>Details deleted successfully.</Typography>
+      ) : (
+        Object.keys(studentData).length > 0 ? (
+          <div style={{ backgroundColor: '#cfe8fc', height: '70vh' }}>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div style={{ marginLeft: "3%", marginTop: '1%' }}>
+                <Tooltip title={studentData.firstName} placement="top">
+                  <img
+                    src="https://via.placeholder.com/150"
+                    alt="Demo Picture"
+                    title="Demo Picture Title"
+                    style={{ width: "120px", height: "120px", borderRadius: "70%" }}
+                  />
+                </Tooltip>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: '1%', marginLeft: '3%' }}>
+                <h1>{studentData.firstName} {studentData.lastName}</h1>
+              </div>
+            </div>
+            <div style={{ borderStyle: 'groove', height: '30vh', margin: '1%' }}>
+              <div style={{ float: "left", width: "50%" }}>
+                <Grid item xs={12} md={6} style={{ marginLeft: "3%", marginTop: "2%" }}>
+                  <Typography variant="body1" ><strong>First Name:</strong> {studentData.firstName}</Typography>
+                  <Typography variant="body1"><strong>Last Name:</strong> {studentData.lastName}</Typography>
+                  <Typography variant="body1"><strong>Age:</strong> {studentData.age}</Typography>
+                  <Typography variant="body1"><strong>Email:</strong> {studentData.emailId}</Typography>
+                  <Typography variant="body1"><strong>Class:</strong> {studentData._class}</Typography>
+                  <Typography variant="body1"><strong>Address:</strong> {studentData.address}</Typography>
+                </Grid>
+              </div>
+              <div style={{ float: "right", width: "50%" }}>
+                <Grid item xs={12} md={6} style={{ marginTop: "2%" }}>
+                  <Typography variant="body1" ><strong>Father's Name:</strong> {studentData.fatherName}</Typography>
+                  <Typography variant="body1" ><strong>Mother's Name:</strong> {studentData.motherName}</Typography>
+                  <Typography variant="body1" ><strong>Blood Group:</strong> {studentData.bloodGroup}</Typography>
+                  <Typography variant="body1" ><strong>Allergies: </strong>{studentData.allergies}</Typography>
+                  <Typography variant="body1" ><strong>Extracurricular:</strong> {studentData.extraCurricular}</Typography>
+                  <Typography variant="body1" ><strong>Transport:</strong> {studentData.transport}</Typography>
+                </Grid>
+              </div>
+            </div>
+            <Box display="flex" justifyContent="flex-end" width="50%" mt={2}>
+              <Button variant="contained" color="primary" style={{ marginLeft: "30%", marginTop: '1%' }} onClick={handleUpdateStudentClick}>
+                <EditIcon />
+                Edit Student Details
+                {showComponent && <UpdateStudentDialog />}
+              </Button>
+
+              <Button variant="contained" color="secondary" style={{ marginLeft: "5%", marginTop: '1%' }} onClick={handleDeleteConfirmation}>
+                <DeleteIcon />
+                Delete Student
+              </Button>
+            </Box>
+          </div>
+        ) : null
+      )}
+    </div>
   );
-};
+}
 
 export default StudentDetails;
