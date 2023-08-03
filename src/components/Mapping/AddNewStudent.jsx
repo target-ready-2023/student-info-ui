@@ -30,7 +30,7 @@ const Addstudent=()=>{
     const [motherName,setMotherName]=React.useState('');
     const [fatherName,setFatherName]=React.useState('');
     const [address,setAddress]=React.useState('');
-    const [_class,setClass]=React.useState('');
+    const [standard,setStandard]=React.useState('');
     const [subjects,setsubjects]=React.useState('');
     const [extracurriculars,setExtraCurriculars]=React.useState('');
     const [allergies,setAllergies]=React.useState('');
@@ -50,7 +50,7 @@ const Addstudent=()=>{
         }
 
         setOpen(false);
-        const student={firstName,lastName,emailId,age,address,gender,subjects,_class,motherName,fatherName,extracurriculars,allergies,bloodGroup,transport};
+        const student={firstName,lastName,emailId,age,address,gender,subjects,standard,motherName,fatherName,extracurriculars,allergies,bloodGroup,transport};
         Studentservice.createStudent(student).then(response => response.data)
         .then((data)=>{
             console.log(data);
@@ -204,8 +204,8 @@ const Addstudent=()=>{
             type="email"
             fullWidth
             variant="standard"
-            value={_class}
-            onChange={(e)=>setClass(e.target.value)}
+            value={standard}
+            onChange={(e)=>setStandard(e.target.value)}
           />
     
           <TextField

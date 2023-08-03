@@ -1,6 +1,7 @@
 import axios from 'axios';
 const STUDENT_BASE_URL="http://localhost:8090/student_information_service/v1/student";
 class Studentservice{
+
     getStudentById(studentId){
         try {return axios.get(STUDENT_BASE_URL+'/'+studentId);}
         catch (error){
@@ -10,7 +11,7 @@ class Studentservice{
     }
 
     getAllStudents() {
-        return axios.get(STUDENT_BASE_URL);
+        return axios.get(`http://localhost:8090/student_information_service/v1/students`);
       }
 
     createStudent(student){

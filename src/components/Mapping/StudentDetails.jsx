@@ -83,7 +83,7 @@ const StudentDetails = () => {
                   <Typography variant="body1"><strong>Last Name:</strong> {studentData.lastName}</Typography>
                   <Typography variant="body1"><strong>Age:</strong> {studentData.age}</Typography>
                   <Typography variant="body1"><strong>Email:</strong> {studentData.emailId}</Typography>
-                  <Typography variant="body1"><strong>Class:</strong> {studentData._class}</Typography>
+                  <Typography variant="body1"><strong>Class:</strong> {studentData.standard}</Typography>
                   <Typography variant="body1"><strong>Address:</strong> {studentData.address}</Typography>
                 </Grid>
               </div>

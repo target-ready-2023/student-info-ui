@@ -8,8 +8,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
 import Studentservice from "../services/Studentservice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const UpdateStudentDialog = () => {
+  const navigate= useNavigate();
   const [open, setOpen] = useState(true);
   const {id}=useParams();
   const [updatedStudent, setUpdatedStudent] = useState({});
@@ -32,6 +33,7 @@ const UpdateStudentDialog = () => {
 
       // Close the dialog box after successful update
       setOpen(false);
+      // navigate('students'+'/'+{id});
       window.location.reload();
     })
     .catch((error) => {

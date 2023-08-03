@@ -23,11 +23,13 @@ const AllStudentsTable = () => {
     Studentservice.getAllStudents()
       .then((response) => {
         setStudents(response.data);
+        const sortedStudents = response.data.sort((a, b) => a.id - b.id);
+        setStudents(sortedStudents);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, []); console.log(students);
 
   const handleChange = (event) => {
     setSelectedColumns(event.target.value);
@@ -39,7 +41,7 @@ const AllStudentsTable = () => {
     lastName: "Last Name",
     age: "Age",
     gender: "Gender",
-    _class: "Standard",
+    standard: "Standard",
     emailId: "Email",
     transport:"Transport",
     // Add more mappings here
