@@ -15,6 +15,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
+import Box from "@mui/material/Box";
 const Addstudent=()=>{
     
     const [open, setOpen] = React.useState(true);
@@ -90,6 +91,7 @@ const Addstudent=()=>{
             variant="standard"
             value={firstName}
             onChange={(e)=>setfirstName(e.target.value)}
+            required
           />
           <TextField
             autoFocus
@@ -101,6 +103,7 @@ const Addstudent=()=>{
             variant="standard"
             value={lastName}
             onChange={(e)=>setlastName(e.target.value)}
+            required
           />
           
           <TextField
@@ -149,6 +152,7 @@ const Addstudent=()=>{
             onChange={(e)=>setGender(e.target.value)}
             
           /> */}
+          <Box mt={2}>
           <FormControl>
       <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
       <RadioGroup
@@ -253,6 +257,7 @@ const Addstudent=()=>{
             value={transport}
             onChange={(e)=>setTransport(e.target.value)}
           />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

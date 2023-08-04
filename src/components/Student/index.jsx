@@ -78,24 +78,27 @@ function Student() {
             label="Enter Student ID "
             value={studentId}
             onChange={handleChange}
+            
             />    
                        
           <Button type="submit" variant="contained" style={{ backgroundColor: '#0047AB', color: '#FFFFFF',minWidth: '40px',marginLeft:'1%' }} ><SearchIcon/> </Button>
         </form>           
-            
-        <stack direction="row" spacing={4} > 
-            <Box textAlign='center' sx={{mt:'1%'}}><Button onClick={handleClickOpen} variant="contained" color="primary"> <PersonAddIcon />  Add a new student </Button></Box>
-            {showComponent && <Addstudent/>}
+          <Box mt={2}> 
+        <Box display="flex" flexDirection="row" justifyContent="center">
+      <Box textAlign="center" sx={{ mt: "1%", mr: "15px" }}>
+        <Button onClick={handleClickOpen} variant="contained" color="primary">
+          <PersonAddIcon /> Add a new student
+        </Button>
+      </Box>
+      {showComponent && <Addstudent />}
+      <Box textAlign="center" sx={{ mt: "1%" }}>
+        <Button variant="contained" color="primary" onClick={handleGetAllStudents}>
+          Get all students
+        </Button>
 
-           
-
-
-        
-         
-            {/* <AddNew open={open} onClose={handleClose}/> */}
-            <Box textAlign='center' sx={{mt:'1%'}}><Button variant="contained" color="primary" onClick={handleGetAllStudents}> Get all students </Button></Box>
-            
-            </stack>
+      </Box>
+    </Box>
+    </Box>
             
             
         </Card>
