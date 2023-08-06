@@ -16,13 +16,25 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Box from "@mui/material/Box";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 const Addstudent=()=>{
     
     const [open, setOpen] = React.useState(true);
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
     const handleClose =() =>{
         setOpen(false);
     }
+
+    const handleSnackbarClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setSnackbarOpen(false);
+    };
+
     const [firstName,setfirstName]=React.useState('');
     const [lastName,setlastName]=React.useState('');
     const [emailId,setEmail]=React.useState('');
@@ -33,25 +45,20 @@ const Addstudent=()=>{
     const [address,setAddress]=React.useState('');
     const [standard,setStandard]=React.useState('');
     const [subjects,setsubjects]=React.useState('');
-    const [extracurriculars,setExtraCurriculars]=React.useState('');
+    const [extraCurricular,setExtraCurriculars]=React.useState('');
     const [allergies,setAllergies]=React.useState('');
     const [bloodGroup,setBloodgroup]=React.useState('');
     const [transport,setTransport]=React.useState('');
     const saveStudent=(e)=>{
         e.preventDefault();
 
-        if (!firstName) {
-          alert("Please enter the First Name.");
-          return; // Exit the function if the First Name field is empty
-        }
-    
-        if (!lastName) {
-          alert("Please enter the Last Name.");
-          return; // Exit the function if the Last Name field is empty
+        if (!firstName || !lastName) {
+          setSnackbarOpen(true);
+          return;
         }
 
         setOpen(false);
-        const student={firstName,lastName,emailId,age,address,gender,subjects,standard,motherName,fatherName,extracurriculars,allergies,bloodGroup,transport};
+        const student={firstName,lastName,emailId,age,address,gender,subjects,standard,motherName,fatherName,extraCurricular,allergies,bloodGroup,transport};
         Studentservice.createStudent(student).then(response => response.data)
         .then((data)=>{
             console.log(data);
@@ -65,6 +72,7 @@ const Addstudent=()=>{
 
         
         return(
+          <div>
 <Dialog  open={open} onClose={handleClose}>
             <DialogTitle>Student Details</DialogTitle>
         <DialogContent>
@@ -221,7 +229,7 @@ const Addstudent=()=>{
             type="email"
             fullWidth
             variant="standard"
-            value={extracurriculars}
+            value={extraCurricular}
             onChange={(e)=>setExtraCurriculars(e.target.value)}
           />
           <TextField
@@ -265,6 +273,30 @@ const Addstudent=()=>{
           
         </DialogActions>
       </Dialog>
+      {/* Snackbar to show the error message */}
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={snackbarOpen && (!firstName || !lastName)}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message="First Name and Last Name fields are mandatory."
+        action={
+          <>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleSnackbarClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </>
+        }
+      />
+      </div>
         );
 }
 export default Addstudent;
