@@ -16,24 +16,16 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Box from "@mui/material/Box";
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 const Addstudent=()=>{
     
     const [open, setOpen] = React.useState(true);
-    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
     const handleClose =() =>{
         setOpen(false);
     }
 
-    const handleSnackbarClose = (event, reason) => {
-      if (reason === 'clickaway') {
-        return;
-      }
-      setSnackbarOpen(false);
-    };
+    const [formSubmitted, setFormSubmitted] = React.useState(false);
+    const [mandatoryFieldsMissing, setMandatoryFieldsMissing] = React.useState(false);
 
     const [firstName,setfirstName]=React.useState('');
     const [lastName,setlastName]=React.useState('');
@@ -51,28 +43,24 @@ const Addstudent=()=>{
     const [transport,setTransport]=React.useState('');
     const saveStudent=(e)=>{
         e.preventDefault();
+        setFormSubmitted(true);
 
-        if (!firstName || !lastName) {
-          setSnackbarOpen(true);
+        if (!firstName || !lastName || !standard) {
+          setMandatoryFieldsMissing(true);
           return;
         }
 
         setOpen(false);
+        setMandatoryFieldsMissing(false);
         const student={firstName,lastName,emailId,age,address,gender,subjects,standard,motherName,fatherName,extraCurricular,allergies,bloodGroup,transport};
         Studentservice.createStudent(student).then(response => response.data)
         .then((data)=>{
             console.log(data);
-            <Dialog> 
-                <DialogContent>
-                    <DialogContentText>Student Added Successfully!</DialogContentText>
-                </DialogContent>
-            </Dialog>
         })
         };
 
         
         return(
-          <div>
 <Dialog  open={open} onClose={handleClose}>
             <DialogTitle>Student Details</DialogTitle>
         <DialogContent>
@@ -100,6 +88,8 @@ const Addstudent=()=>{
             value={firstName}
             onChange={(e)=>setfirstName(e.target.value)}
             required
+            error={formSubmitted && !firstName}
+            helperText={(formSubmitted && !firstName) && 'Required field'}
           />
           <TextField
             autoFocus
@@ -112,6 +102,9 @@ const Addstudent=()=>{
             value={lastName}
             onChange={(e)=>setlastName(e.target.value)}
             required
+            error={formSubmitted && !lastName}
+            helperText={(formSubmitted && !lastName) && 'Required field'}
+
           />
           
           <TextField
@@ -213,11 +206,14 @@ const Addstudent=()=>{
             margin="dense"
             id="name"
             label="Standard"
-            type="email"
+            type="name"
             fullWidth
             variant="standard"
             value={standard}
             onChange={(e)=>setStandard(e.target.value)}
+            required
+            error={formSubmitted && !standard}
+            helperText={(formSubmitted && !standard) && 'Required field'}
           />
     
           <TextField
@@ -226,7 +222,7 @@ const Addstudent=()=>{
             id="name"
             label="Extra Cirriculars"
             input="name"
-            type="email"
+            type="name"
             fullWidth
             variant="standard"
             value={extraCurricular}
@@ -237,7 +233,7 @@ const Addstudent=()=>{
             margin="dense"
             id="name"
             label="Allergies"
-            type="email"
+            type="name"
             fullWidth
             variant="standard"
             value={allergies}
@@ -248,7 +244,7 @@ const Addstudent=()=>{
             margin="dense"
             id="name"
             label="Blood Group"
-            type="email"
+            type="name"
             fullWidth
             variant="standard"
             value={bloodGroup}
@@ -259,7 +255,7 @@ const Addstudent=()=>{
             margin="dense"
             id="name"
             label="Transportation"
-            type="email"
+            type="name"
             fullWidth
             variant="standard"
             value={transport}
@@ -273,30 +269,6 @@ const Addstudent=()=>{
           
         </DialogActions>
       </Dialog>
-      {/* Snackbar to show the error message */}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={snackbarOpen && (!firstName || !lastName)}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        message="First Name and Last Name fields are mandatory."
-        action={
-          <>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleSnackbarClose}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </>
-        }
-      />
-      </div>
         );
 }
 export default Addstudent;
