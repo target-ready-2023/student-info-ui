@@ -18,6 +18,8 @@ const AllStudentsTable = () => {
   const [students, setStudents] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(["id", "firstName", "lastName", "age"]);
   const [filterBarTitle, setFilterBarTitle] = useState("Filter Columns");
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 5;
 
   useEffect(() => {
     Studentservice.getAllStudents()
@@ -48,11 +50,19 @@ const AllStudentsTable = () => {
   };
 
   const allColumns = Object.keys(columnMapping);
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = students.slice(indexOfFirstRecord, indexOfLastRecord);
+  const totalPages = Math.ceil(students.length / recordsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography variant="h5">
+        <Typography variant="h5" style={{marginLeft: "2%"}}>
           <b>Student Details Table</b>
         </Typography>
 
@@ -84,7 +94,7 @@ const AllStudentsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {students.map((student) => (
+          {currentRecords.map((student) => (
               <TableRow key={student.id}>
                 {selectedColumns.map((column) => (
                   <TableCell key={column}>{student[column]}</TableCell>
@@ -94,6 +104,25 @@ const AllStudentsTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            style={{
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              margin: "2px",
+              padding: "5px 10px",
+              background: currentPage === index + 1 ? "#ddd" : "transparent",
+            }}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+
     </div>
   );
 };
