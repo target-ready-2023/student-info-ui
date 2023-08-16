@@ -22,22 +22,15 @@ const UpdateStudentDialog = () => {
   },[])
   const handleUpdateDetails = (event) => {
     event.preventDefault();
-    // Make an API call using Axios to update the student details
-    // Replace the API_ENDPOINT with your actual API endpoint for updating a student
     console.log(updatedStudent);
     Studentservice.updateStudent(id,updatedStudent)
     
     .then((response) => {
-      // Handle successful response, e.g., show a success message
       console.log("Student details updated successfully!", response.data);
-
-      // Close the dialog box after successful update
       setOpen(false);
-      // navigate('students'+'/'+{id});
       window.location.reload();
     })
     .catch((error) => {
-      // Handle error, e.g., show an error message
       console.error("Error updating student details:", error);
     });
     setOpen(false);
@@ -51,6 +44,11 @@ const UpdateStudentDialog = () => {
     }));
   };
 
+  const handleClose =() =>{
+    setOpen(false);
+    window.location.reload();
+}
+
   return (
     <div>
       <form onSubmit={handleUpdateDetails}>
@@ -60,7 +58,6 @@ const UpdateStudentDialog = () => {
           <DialogContentText>
             Update the details of the student.
           </DialogContentText>
-          {/* Add input fields for the updated student details */}
           <TextField
             label="First Name"
             name="firstName"
@@ -82,11 +79,10 @@ const UpdateStudentDialog = () => {
             onChange={handleInputChange}
             fullWidth
           />
-          {/* Add other input fields for other student details */}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button type="submit" onClick={(e)=>handleUpdateDetails(e)} color="primary">Update</Button>
+          <Button onClick={() => { handleClose() }}>Cancel</Button>
+          <Button type="submit" onClick={(e)=>handleUpdateDetails(e)} >Update</Button>
         </DialogActions>
       </Dialog>
       </form>

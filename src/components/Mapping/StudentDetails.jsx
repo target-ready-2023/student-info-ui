@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import UpdateStudentDialog from "./UpdateStudentDialog";
+import { useRoleContext } from '../roles/RoleContext';
 
 const StudentDetails = () => {
   const [studentData, setStudentData] = React.useState({});
@@ -16,6 +17,7 @@ const StudentDetails = () => {
   const navigate = useNavigate();
   const [showComponent, setShowComponent] = React.useState(false);
   const [studentDeleted, setStudentDeleted] = React.useState(false);
+  const { userRole } = useRoleContext();
 
   useEffect(() => {
     Studentservice.getStudentById(id)
@@ -34,19 +36,11 @@ const StudentDetails = () => {
   const handleDeleteConfirmation = () => {
     Studentservice.deleteStudentById(studentData.id)
       .then((response) => {
-        // Handle successful response, e.g., show a success message
         console.log("Student deleted successfully!", response.data);
         setStudentData({});
         setStudentDeleted(true);
-
-        // Optionally, you can also perform any other action after successful deletion
-        // Reset the studentData state after successful deletion
-        // setTimeout(() => {
-        //   navigate("/students"); // Redirect to student page after 2 seconds
-        // }, 2000);
       })
       .catch((error) => {
-        // Handle error, e.g., show an error message
         console.error("Error deleting student:", error);
       });
   };
@@ -99,17 +93,20 @@ const StudentDetails = () => {
               </div>
             </div>
             <Box display="flex" justifyContent="flex-end" width="50%" mt={2}>
-              <Button variant="contained" color="primary" style={{ marginLeft: "30%", marginTop: '1%' }} onClick={handleUpdateStudentClick}>
-                <EditIcon />
-                Edit Student Details
-                {showComponent && <UpdateStudentDialog />}
-              </Button>
-
-              <Button variant="contained" color="secondary" style={{ marginLeft: "5%", marginTop: '1%' }} onClick={handleDeleteConfirmation}>
-                <DeleteIcon />
-                Delete Student
-              </Button>
-            </Box>
+        {userRole === 'admin' && ( // Show for admin role only
+          <>
+            <Button variant="contained" color="primary" style={{ marginLeft: "30%", marginTop: '1%', backgroundColor: '#6c88c8'}} onClick={handleUpdateStudentClick}>
+              <EditIcon />
+              Edit Student Details
+            </Button>
+            {showComponent && <UpdateStudentDialog />}
+            <Button variant="contained" color="secondary" style={{ marginLeft: "5%", marginTop: '1%' }} onClick={handleDeleteConfirmation}>
+              <DeleteIcon />
+              Delete Student
+            </Button>
+          </>
+        )}
+      </Box>
           </div>
         ) : null
       )}

@@ -16,12 +16,18 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import Box from "@mui/material/Box";
-const Addstudent=()=>{
+import { useRoleContext } from '../roles/RoleContext';
+import ServiceError from '../shared/ServiceError';
+const Addstudent=({onClose})=>{
     
     const [open, setOpen] = React.useState(true);
+    const { userRole } = useRoleContext();
+    const [errorOccurred, setErrorOccurred] = React.useState(false);
 
     const handleClose =() =>{
         setOpen(false);
+        //window.location.reload();
+        onClose();
     }
 
     const [formSubmitted, setFormSubmitted] = React.useState(false);
@@ -56,219 +62,213 @@ const Addstudent=()=>{
         Studentservice.createStudent(student).then(response => response.data)
         .then((data)=>{
             console.log(data);
+            setOpen(false);
+            //window.location.reload();
+            onClose();
         })
+        .catch(error => {
+          console.error("Error adding student:", error);
+          setErrorOccurred(true);
+        });
         };
 
         
         return(
-<Dialog  open={open} onClose={handleClose}>
-            <DialogTitle>Student Details</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            <strong>Add the details of student. </strong>
-          </DialogContentText>
-          <Button
-          variant="contained"
-          component="label"
-          >
-        Upload Picture
-        <input
-        type="file"
-        hidden
-        />
-        </Button>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="First Name"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={firstName}
-            onChange={(e)=>setfirstName(e.target.value)}
-            required
-            error={formSubmitted && !firstName}
-            helperText={(formSubmitted && !firstName) && 'Required field'}
+          <div>
+            <Dialog  open={open} onClose={handleClose}>
+            {errorOccurred ? ( 
+          <ServiceError />
+        ) : (
+          <>
+              <DialogTitle>Student Details</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <strong>Add the details of student. </strong>
+            </DialogContentText>
+            <Button
+            variant="contained"
+            component="label"
+            >
+          Upload Picture
+          <input
+          type="file"
+          hidden
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Last Name"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={lastName}
-            onChange={(e)=>setlastName(e.target.value)}
-            required
-            error={formSubmitted && !lastName}
-            helperText={(formSubmitted && !lastName) && 'Required field'}
-
-          />
-          
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email"
-            input="name"
-            fullWidth
-            variant="standard"
-            value={emailId}
-            onChange={(e)=>setEmail(e.target.value)}
-          />
-
-<TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Age"
-            input="name"
-            fullWidth
-            variant="standard"
-            value={age}
-            onChange={(e)=>setAge(e.target.value)}
-          />
-
-          {/* <InputLabel id="demo-simple-select-filled-label">Age</InputLabel> */}
-       
-          
-          {/* <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={11}>11</MenuItem>
-          <MenuItem value={12}>12</MenuItem> */}
-        {/* </Select> */}
-        {/* <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Gender"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={gender}
-            onChange={(e)=>setGender(e.target.value)}
-            
-          /> */}
-          <Box mt={2}>
-          <FormControl>
-      <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-      <RadioGroup
-        row
-        aria-labelledby="demo-row-radio-buttons-group-label"
-        name="row-radio-buttons-group"
-      >
-        <FormControlLabel value="female" control={<Radio />} label="Female" onChange={(e)=>setGender(e.target.value)}/>
-        <FormControlLabel value="male" control={<Radio />} label="Male" onChange={(e)=>setGender(e.target.value)}/>
-        <FormControlLabel value="other" control={<Radio />} label="Other" onChange={(e)=>setGender(e.target.value)}/>
-      </RadioGroup>
-    </FormControl>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Mother Name"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={motherName}
-            onChange={(e)=>setMotherName(e.target.value)}
-
-            
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Father Name"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={fatherName}
-            onChange={(e)=>setFatherName(e.target.value)}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Address"
-            input="name"
-            fullWidth
-            variant="standard"
-            value={address}
-            onChange={(e)=>setAddress(e.target.value)}
-          />
+          </Button>
             <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Standard"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={standard}
-            onChange={(e)=>setStandard(e.target.value)}
-            required
-            error={formSubmitted && !standard}
-            helperText={(formSubmitted && !standard) && 'Required field'}
-          />
-    
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Extra Cirriculars"
-            input="name"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={extraCurricular}
-            onChange={(e)=>setExtraCurriculars(e.target.value)}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Allergies"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={allergies}
-            onChange={(e)=>setAllergies(e.target.value)}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Blood Group"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={bloodGroup}
-            onChange={(e)=>setBloodgroup(e.target.value)}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Transportation"
-            type="name"
-            fullWidth
-            variant="standard"
-            value={transport}
-            onChange={(e)=>setTransport(e.target.value)}
-          />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={(e)=>saveStudent(e)}>Add Student</Button>
-          
-        </DialogActions>
-      </Dialog>
+              autoFocus
+              margin="dense"
+              id="name"
+              label="First Name"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={firstName}
+              onChange={(e)=>setfirstName(e.target.value)}
+              required
+              error={formSubmitted && !firstName}
+              helperText={(formSubmitted && !firstName) && 'Required field'}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Last Name"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={lastName}
+              onChange={(e)=>setlastName(e.target.value)}
+              required
+              error={formSubmitted && !lastName}
+              helperText={(formSubmitted && !lastName) && 'Required field'}
+
+            />
+            
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Email"
+              input="name"
+              fullWidth
+              variant="standard"
+              value={emailId}
+              onChange={(e)=>setEmail(e.target.value)}
+            />
+
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Age"
+              input="name"
+              fullWidth
+              variant="standard"
+              value={age}
+              onChange={(e)=>setAge(e.target.value)}
+            />
+            <Box mt={2}>
+            <FormControl>
+        <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="row-radio-buttons-group"
+        >
+          <FormControlLabel value="female" control={<Radio />} label="Female" onChange={(e)=>setGender(e.target.value)}/>
+          <FormControlLabel value="male" control={<Radio />} label="Male" onChange={(e)=>setGender(e.target.value)}/>
+          <FormControlLabel value="other" control={<Radio />} label="Other" onChange={(e)=>setGender(e.target.value)}/>
+        </RadioGroup>
+      </FormControl>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Mother Name"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={motherName}
+              onChange={(e)=>setMotherName(e.target.value)}
+
+              
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Father Name"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={fatherName}
+              onChange={(e)=>setFatherName(e.target.value)}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Address"
+              input="name"
+              fullWidth
+              variant="standard"
+              value={address}
+              onChange={(e)=>setAddress(e.target.value)}
+            />
+            <Box mt={3}>
+              <FormControl required fullWidth>
+                  <InputLabel>Standard</InputLabel>
+                    <Select
+                      value={standard}
+                      onChange={(e) => setStandard(e.target.value)}
+                      error={formSubmitted && !standard}
+                    >
+                    <MenuItem value="">
+                    <em>Select</em>
+                    </MenuItem>
+                        {Array.from({ length: 10 }, (_, index) => index + 1).map(value => (
+                          <MenuItem key={value} value={value}>{value}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Box>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Extra Cirriculars"
+              input="name"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={extraCurricular}
+              onChange={(e)=>setExtraCurriculars(e.target.value)}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Allergies"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={allergies}
+              onChange={(e)=>setAllergies(e.target.value)}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Blood Group"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={bloodGroup}
+              onChange={(e)=>setBloodgroup(e.target.value)}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Transportation"
+              type="name"
+              fullWidth
+              variant="standard"
+              value={transport}
+              onChange={(e)=>setTransport(e.target.value)}
+            />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => { handleClose() }}>Cancel</Button>
+            <Button onClick={(e)=>saveStudent(e)}>Add Student</Button>
+            
+          </DialogActions>
+          </>
+        )}
+        </Dialog>
+          </div>
         );
 }
 export default Addstudent;

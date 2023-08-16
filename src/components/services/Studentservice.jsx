@@ -1,5 +1,5 @@
 import axios from 'axios';
-const STUDENT_BASE_URL="http://localhost:8090/student_information_service/v1/student";
+const STUDENT_BASE_URL="http://localhost:8080/students";
 class Studentservice{
 
     getStudentById(studentId){
@@ -11,7 +11,7 @@ class Studentservice{
     }
 
     getAllStudents() {
-        return axios.get(`http://localhost:8090/student_information_service/v1/students`);
+        return axios.get(`http://localhost:8080/students`);
       }
 
     createStudent(student){
