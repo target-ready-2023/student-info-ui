@@ -10,7 +10,7 @@ const Footer = () => {
         <a  href="/contact">Contact US</a></div>
 
         <Box textAlign='right' sx={{mr:'3%'}}>
-            <Button variant="contained" color="secondary">
+            <Button variant="contained" style={{backgroundColor: '#3F51B5', color:"white"}}>
             <LogoutIcon/> Logout 
             </Button>
             </Box>
