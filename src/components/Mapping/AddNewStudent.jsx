@@ -200,9 +200,9 @@ const Addstudent=({onClose})=>{
             />
             <Box mt={3}>
               <FormControl required fullWidth >
-                    <InputLabel>Standard</InputLabel>
+                    <InputLabel>Class</InputLabel>
                     <Select
-                      input={<OutlinedInput label="Standard" />}
+                      input={<OutlinedInput label="Class" />}
                       value={standard}
                       onChange={(e) => setStandard(e.target.value)}
                       error={formSubmitted && !standard}

@@ -76,13 +76,13 @@ function Student() {
       <div><p>OR</p></div>
       <div>
       <FormControl sx={{ m: 1, width: 350 }}>
-      <InputLabel id="demo-multiple-checkbox-label">Standards</InputLabel>
+      <InputLabel id="demo-multiple-checkbox-label">Class</InputLabel>
       <Select
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
           value={selectedClasses}
-          input={<OutlinedInput label="Standards" />}
+          input={<OutlinedInput label="Class" />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
         >
