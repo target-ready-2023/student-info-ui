@@ -8,12 +8,6 @@ const Footer = () => {
 <div style={{display:'flex',alignItems: 'center',justifyContent: 'space-between',}}>
   <div style={{marginLeft:'40%'}}><a href="/about">About US</a>
         <a  href="/contact">Contact US</a></div>
-
-        <Box textAlign='right' sx={{mr:'3%'}}>
-            <Button variant="contained" style={{backgroundColor: '#3F51B5', color:"white"}}>
-            <LogoutIcon/> Logout 
-            </Button>
-            </Box>
 </div>
         
       </footer>

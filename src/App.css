@@ -19,7 +19,8 @@
   position: absolute;
   width: 100%;
   text-align: center;
-  padding: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 .App-footer a {
   color: white !important;
@@ -36,7 +37,7 @@
   color: #fff;
 }
 .App-Card {
-  box-shadow: none !important;
+  box-shadow: 3;
   text-align: center;
 }
 .App-Card a {

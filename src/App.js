@@ -4,6 +4,7 @@ import Header from './components/Header';
 import PageRoutes from './components/PageRoutes';
 import { BrowserRouter } from 'react-router-dom';
 import { RoleProvider } from './components/roles/RoleContext';
+import React from 'react';
 function App() {
   return (
     <BrowserRouter>

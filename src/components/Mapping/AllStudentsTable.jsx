@@ -11,10 +11,12 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
-
-import Studentservice from "../services/Studentservice";
+import axios from 'axios';
+import { useParams } from "react-router-dom";
 
 const AllStudentsTable = () => {
+  const { classNumbers } = useParams();
+  const selectedClasses = classNumbers.split(",").map(Number);
   const [students, setStudents] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(["id", "firstName", "lastName", "age"]);
   const [filterBarTitle, setFilterBarTitle] = useState("Filter Columns");
@@ -22,20 +24,21 @@ const AllStudentsTable = () => {
   const recordsPerPage = 5;
 
   useEffect(() => {
-    Studentservice.getAllStudents()
-      .then((response) => {
+    const fetchStudents = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/students?standardList=${selectedClasses.join(",")}`);
         setStudents(response.data);
-        const sortedStudents = response.data.sort((a, b) => a.id - b.id);
-        setStudents(sortedStudents);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []); console.log(students);
+      } catch (error) {
+        console.error("Error fetching student data", error);
+      }
+    };
+    fetchStudents();
+  }, []);
 
   const handleChange = (event) => {
     setSelectedColumns(event.target.value);
   };
+
 
   const columnMapping = {
     id: "Student ID",
@@ -46,7 +49,6 @@ const AllStudentsTable = () => {
     standard: "Standard",
     emailId: "Email",
     transport:"Transport",
-    // Add more mappings here
   };
 
   const allColumns = Object.keys(columnMapping);

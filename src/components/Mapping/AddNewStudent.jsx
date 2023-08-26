@@ -18,17 +18,14 @@ import FormLabel from '@mui/material/FormLabel';
 import Box from "@mui/material/Box";
 import { useRoleContext } from '../roles/RoleContext';
 import ServiceError from '../shared/ServiceError';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { OutlinedInput} from "@mui/material";
 const Addstudent=({onClose})=>{
     
     const [open, setOpen] = React.useState(true);
     const { userRole } = useRoleContext();
     const [errorOccurred, setErrorOccurred] = React.useState(false);
-
-    const handleClose =() =>{
-        setOpen(false);
-        //window.location.reload();
-        onClose();
-    }
 
     const [formSubmitted, setFormSubmitted] = React.useState(false);
     const [mandatoryFieldsMissing, setMandatoryFieldsMissing] = React.useState(false);
@@ -47,6 +44,14 @@ const Addstudent=({onClose})=>{
     const [allergies,setAllergies]=React.useState('');
     const [bloodGroup,setBloodgroup]=React.useState('');
     const [transport,setTransport]=React.useState('');
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [addSuccess, setAddSuccess] = React.useState(false);
+
+    const handleClose = () => {
+      setOpen(false);
+      onClose();
+    };
+
     const saveStudent=(e)=>{
         e.preventDefault();
         setFormSubmitted(true);
@@ -62,17 +67,24 @@ const Addstudent=({onClose})=>{
         Studentservice.createStudent(student).then(response => response.data)
         .then((data)=>{
             console.log(data);
-            setOpen(false);
-            //window.location.reload();
-            onClose();
-        })
+            setAddSuccess(true);
+            setTimeout(() => {
+              setOpen(false); 
+              setAddSuccess(false);
+              onClose();
+            }, 1000);
+          }
+        )
         .catch(error => {
           console.error("Error adding student:", error);
           setErrorOccurred(true);
         });
         };
 
-        
+        const handleSnackbarClose = () => {
+          setAddSuccess(false);
+        };
+
         return(
           <div>
             <Dialog  open={open} onClose={handleClose}>
@@ -85,16 +97,6 @@ const Addstudent=({onClose})=>{
             <DialogContentText>
               <strong>Add the details of student. </strong>
             </DialogContentText>
-            <Button
-            variant="contained"
-            component="label"
-            >
-          Upload Picture
-          <input
-          type="file"
-          hidden
-          />
-          </Button>
             <TextField
               autoFocus
               margin="dense"
@@ -197,9 +199,10 @@ const Addstudent=({onClose})=>{
               onChange={(e)=>setAddress(e.target.value)}
             />
             <Box mt={3}>
-              <FormControl required fullWidth>
-                  <InputLabel>Standard</InputLabel>
+              <FormControl required fullWidth >
+                    <InputLabel>Standard</InputLabel>
                     <Select
+                      input={<OutlinedInput label="Standard" />}
                       value={standard}
                       onChange={(e) => setStandard(e.target.value)}
                       error={formSubmitted && !standard}
@@ -261,13 +264,18 @@ const Addstudent=({onClose})=>{
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => { handleClose() }}>Cancel</Button>
-            <Button onClick={(e)=>saveStudent(e)}>Add Student</Button>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={saveStudent}>Add Student</Button>
             
           </DialogActions>
           </>
         )}
         </Dialog>
+        <Snackbar open={addSuccess} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <MuiAlert elevation={6} variant="filled" onClose={handleSnackbarClose} severity="success">
+          Student added successfully!
+        </MuiAlert>
+      </Snackbar>                
           </div>
         );
 }
