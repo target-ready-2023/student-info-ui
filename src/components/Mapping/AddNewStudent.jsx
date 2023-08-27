@@ -46,7 +46,9 @@ const Addstudent=({onClose})=>{
     const [transport,setTransport]=React.useState('');
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [addSuccess, setAddSuccess] = React.useState(false);
-
+    const handleChange = (event) => {
+      setAge(event.target.value);
+    };
     const handleClose = () => {
       setOpen(false);
       onClose();
@@ -211,7 +213,7 @@ const Addstudent=({onClose})=>{
                     <em>Select</em>
                     </MenuItem>
                         {Array.from({ length: 10 }, (_, index) => index + 1).map(value => (
-                          <MenuItem key={value} value={value}>{value}</MenuItem>
+                          <MenuItem key={value} value={value} style={{display:'block', paddingLeft:'5px'}}>{value}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
