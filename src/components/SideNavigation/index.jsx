@@ -56,14 +56,14 @@ const SideNavigation = () => {
           style: { flexDirection: "column" },
         }}
       >
-        <MenuItem onClick={handleHome}>Home</MenuItem>
+        <MenuItem onClick={handleHome} style={{display:'block', padding:'8px'}}>Home</MenuItem>
         {userRole === "admin" ? (
-          <MenuItem onClick={handleAdmin}>Admin</MenuItem>
+          <MenuItem onClick={handleAdmin} style={{display:'block', padding:'8px'}}> Admin</MenuItem>
         ) : null}
         {userRole === "admin" || userRole === "teacher" ? (
-          <MenuItem onClick={handleStudent}>Search</MenuItem>
+          <MenuItem onClick={handleStudent} style={{display:'block', padding:'8px'}}>Search</MenuItem>
         ) : null}
-        <MenuItem onClick={handleHome}>Logout</MenuItem>
+        <MenuItem onClick={handleHome} style={{display:'block', padding:'8px'}}>Logout</MenuItem>
       </Menu>
     </>
   );
